@@ -1,0 +1,16 @@
+{
+    "C_Cpp.intelliSenseEngineFallback": "enabled",
+    "workbench.colorCustomizations": {
+        "sideBar.background": "#252501"
+    },
+    "dotnet.defaultSolution": "modules/mono/glue/GodotSharp/GodotSharp.sln",
+    "files.associations": {
+        "condition_variable": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp",
+        "mutex": "cpp",
+        "ostream": "cpp",
+        "shared_mutex": "cpp",
+        "stop_token": "cpp"
+    }
+}

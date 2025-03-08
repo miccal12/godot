@@ -1,0 +1,139 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                // enable for debugging with breakpoints
+                "dev_build=yes",
+                "platform=windows",
+                "lto=full",
+                "tools=no",                
+                "target=editor",
+                "arch=x86_64",                
+                "bits=64",                
+                "module_mono_enabled=yes",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                    "-c",
+            ],
+            "problemMatcher": "$msCompile"
+        },        
+        {
+            "label": "build_templates_debug",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                // enable for debugging with breakpoints
+                "dev_build=yes",
+                "platform=windows",
+                "lto=full",
+                "tools=no",
+                "target=template_debug",
+                "arch=x86_64",
+                "bits=64",
+                "module_mono_enabled=yes",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_templates",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                // enable for debugging with breakpoints
+                "dev_build=yes",
+                "platform=windows",
+                "lto=full",
+                "tools=no",
+                "target=template_release",
+                "arch=x86_64",
+                "bits=64",
+                "module_mono_enabled=yes",
+            ],
+            "problemMatcher": "$msCompile"
+        },        
+        {
+            "label": "generate_glue",
+            "group": "build",
+            "type": "shell",
+            "command": "${workspaceFolder}\\bin\\godot.windows.editor.dev.x86_64.mono.exe",
+            "args": [
+                "--headless",
+                "--generate-mono-glue",
+                "modules/mono/glue",
+                // "--quit",
+            ],
+            "problemMatcher": "$msCompile",
+            "isBackground": false,
+            
+        },        
+        {
+            "label": "build_managed_libraries",
+            "group": "build",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}\\modules\\mono\\build_scripts\\build_assemblies.py",
+                "--godot-output-dir=${workspaceFolder}\\bin",
+                "--godot-platform=windows",
+            ],
+            "problemMatcher": "$msCompile"
+        },                
+        {
+            "label": "push_nupkgs_local",
+            "group": "build",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}\\modules\\mono\\build_scripts\\build_assemblies.py",
+                "--godot-output-dir=${workspaceFolder}\\bin",
+                "--push-nupkgs-local",
+                "C:\\Users\\micha\\MyLocalNugetSource",
+            ],
+            "problemMatcher": "$msCompile"
+        },                        
+        {
+            "label": "printEnvVariablesToFile",
+            "group": "build",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2025.2.0-win32-x64\\python_files\\printEnvVariablesToFile.py",
+                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2025.2.0-win32-x64\\python_files\\deactivate\\powershell\\envVars.txt",
+            ],
+            "problemMatcher": "$msCompile"
+        },        
+        {
+            "label": "build_bin_and_templates",
+            "dependsOn": [
+                "build",
+//                "clean",
+                "build_templates",
+//                "clean"      ,
+                "build_templates_debug",
+//                "clean"      ,
+                "printEnvVariablesToFile",
+                "generate_glue",
+                "build_managed_libraries",
+                "push_nupkgs_local",
+
+            ],
+            "dependsOrder": "sequence",
+        }
+    ]
+}
