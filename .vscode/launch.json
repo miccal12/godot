@@ -8,7 +8,7 @@
       "processId": "${command:pickProcess}",
     },    
     {
-      "name": "Godot - Build and Launch",
+      "name": "Godot - Build and Launch - C++ debug",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
@@ -25,7 +25,7 @@
       "preLaunchTask": "build_bin_and_templates",
     },        
     {
-      "name": "GrupenGames - Editor",
+      "name": "GrupenGames - Editor - C++ debug",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
@@ -42,7 +42,7 @@
 //      "preLaunchTask": "build_bin_and_templates",
     },
     {
-      "name": "GrupenGames - Run Project",
+      "name": "GrupenGames - Run Project - C++ debug",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
@@ -59,7 +59,7 @@
 //      "preLaunchTask": "build_bin_and_templates",
     },        
     {
-      "name": "VR annoyed - Editor",
+      "name": "VR annoyed - Editor - C++ debug",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
@@ -76,7 +76,7 @@
 //      "preLaunchTask": "build_bin_and_templates",
     },
     {
-      "name": "VR annoyed - Run Project",
+      "name": "VR annoyed - Run Project - C++ debug",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
