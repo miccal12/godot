@@ -2,7 +2,64 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Editor - VR annoyed",
+      "name": "(Windows) Attach",
+      "type": "cppvsdbg",
+      "request": "attach",
+      "processId": "${command:pickProcess}",
+    },    
+    {
+      "name": "Godot - Build and Launch",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
+      "args": [
+        // /*    "--editor",
+        // "--path",
+        // "C:/Users/micha/Documents/Simple Multiplayer"*/
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole",
+      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+      "preLaunchTask": "build_bin_and_templates",
+    },        
+    {
+      "name": "GrupenGames - Editor",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
+      "args": [
+        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/GrupenGames"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole",
+      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+//      "preLaunchTask": "build_bin_and_templates",
+    },
+    {
+      "name": "GrupenGames - Run Project",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
+      "args": [
+//        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/GrupenGames"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole",
+      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+//      "preLaunchTask": "build_bin_and_templates",
+    },        
+    {
+      "name": "VR annoyed - Editor",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
@@ -19,7 +76,7 @@
 //      "preLaunchTask": "build_bin_and_templates",
     },
     {
-      "name": "Launch Project - VR annoyed",
+      "name": "VR annoyed - Run Project",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
@@ -35,28 +92,5 @@
       "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
 //      "preLaunchTask": "build_bin_and_templates",
     },    
-    {
-      "name": "Build and Launch Godot",
-      "type": "cppvsdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
-      "args": [
-        // /*    "--editor",
-        // "--path",
-        // "C:/Users/micha/Documents/Simple Multiplayer"*/
-      ],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "console": "internalConsole",
-      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
-      "preLaunchTask": "build_bin_and_templates",
-    },    
-    {
-      "name": "(Windows) Attach",
-      "type": "cppvsdbg",
-      "request": "attach",
-      "processId": "${command:pickProcess}",
-    }
   ]
 }
