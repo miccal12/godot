@@ -2,14 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Project",
+      "name": "Launch Editor VRkanoid",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
       "args": [
-        // /*    "--editor",
-        // "--path",
-        // "C:/Users/micha/Documents/Simple Multiplayer"*/
+        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/VRkanoid/"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -19,7 +19,24 @@
 //      "preLaunchTask": "build_bin_and_templates",
     },
     {
-      "name": "Build and Launch Project",
+      "name": "Launch Project VRkanoid",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
+      "args": [
+//        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/VRkanoid/"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole",
+      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+//      "preLaunchTask": "build_bin_and_templates",
+    },    
+    {
+      "name": "Build and Launch Godot",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
