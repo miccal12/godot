@@ -32,7 +32,7 @@
       "args": [
         "--editor",
         "--path",
-        "C:/Users/micha/Projects/GrupenGames"
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -49,7 +49,7 @@
       "args": [
 //        "--editor",
         "--path",
-        "C:/Users/micha/Projects/GrupenGames"
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -66,7 +66,7 @@
       "args": [
         "--editor",
         "--path",
-        "C:/Users/micha/Projects/GrupenGames/VRannoyed"
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -83,7 +83,7 @@
       "args": [
 //        "--editor",
         "--path",
-        "C:/Users/micha/Projects/GrupenGames/VRannoyed"
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
