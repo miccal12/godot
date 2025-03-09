@@ -18,6 +18,7 @@
                 "arch=x86_64",                
                 "bits=64",                
                 "module_mono_enabled=yes",
+//                "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", NOT neccesary if std path
             ],
             "problemMatcher": "$msCompile"
         },
@@ -46,6 +47,7 @@
                 "arch=x86_64",
                 "bits=64",
                 "module_mono_enabled=yes",
+  //              "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer",  , NOT neccesary if std path              
             ],
             "problemMatcher": "$msCompile"
         },
@@ -64,6 +66,7 @@
                 "arch=x86_64",
                 "bits=64",
                 "module_mono_enabled=yes",
+//                "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", , NOT neccesary if std path               
             ],
             "problemMatcher": "$msCompile"
         },        
