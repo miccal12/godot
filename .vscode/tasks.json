@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build_with_mono",
             "group": "build",
             "type": "shell",
             "command": "scons",
@@ -18,10 +18,28 @@
                 "arch=x86_64",                
                 "bits=64",                
                 "module_mono_enabled=yes",
+                "llvm=yes",
 //                "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", NOT neccesary if std path
             ],
             "problemMatcher": "$msCompile"
         },
+        {
+            "label": "build",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "debug_symbols=yes",
+                "optimize=debug",
+                "target=editor",
+                "warnings=extra",
+                "werror=yes",
+                "tests=yes",
+                "strict_checks=yes",
+                "llvm=yes",
+            ],
+            "problemMatcher": "$msCompile"
+        },        
         {
             "label": "clean",
             "group": "build",
@@ -33,7 +51,7 @@
             "problemMatcher": "$msCompile"
         },        
         {
-            "label": "build_templates_debug",
+            "label": "build_templates_debug_with_mono",
             "group": "build",
             "type": "shell",
             "command": "scons",
@@ -47,12 +65,13 @@
                 "arch=x86_64",
                 "bits=64",
                 "module_mono_enabled=yes",
+                "llvm=yes",
   //              "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer",  , NOT neccesary if std path              
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build_templates",
+            "label": "build_templates_with_mono",
             "group": "build",
             "type": "shell",
             "command": "scons",
@@ -66,6 +85,7 @@
                 "arch=x86_64",
                 "bits=64",
                 "module_mono_enabled=yes",
+                "llvm=yes",
 //                "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", , NOT neccesary if std path               
             ],
             "problemMatcher": "$msCompile"
@@ -122,7 +142,7 @@
             "problemMatcher": "$msCompile"
         },        
         {
-            "label": "build_bin_and_templates",
+            "label": "build_bin_and_templates_with_mono",
             "dependsOn": [
                 "build",
 //                "clean",
@@ -137,6 +157,13 @@
 
             ],
             "dependsOrder": "sequence",
-        }
+        },
+        {
+            "label": "build_bin",
+            "dependsOn": [
+                "build",
+            ],
+            "dependsOrder": "sequence",
+        }        
     ]
 }
