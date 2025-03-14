@@ -1,5 +1,13 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.0",  
+  // "inputs": [
+    // {
+        // "id": "GodotBin",
+        // "type": "promptString",
+        // "default": "\\bin\\godot.windows.editor.x86_64.mono.exe",
+        // "description": "godot bin"
+    // }
+  // ],   
   "configurations": [
     {
       "name": "(Windows) Attach",
@@ -8,106 +16,52 @@
       "processId": "${command:pickProcess}",
     },    
     {
-      "name": "Godot - Build and Launch - C++ debug",
+      "name": "Godot+mono - C++ debug - Build and Launch",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/godot.windows.editor.x86_64.exe",
+      // "program": "${workspaceFolder}${input:GodotBin}",
+      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",
       "args": [
         "--editor",
         "--path",
         "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
+        // "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"        
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "console": "internalConsole",
       "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
-      "preLaunchTask": "build_bin",
+      "preLaunchTask": "build_debug_with_mono",
     },
     {
-      "name": "Godot - Launch - C++ debug with mono",
+      "name": "Godot+mono - C++ debug - Launch",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
-      "args": [
-        // /*    "--editor",
-        // "--path",
-        // "C:/Users/micha/Documents/Simple Multiplayer"*/
-      ],
+      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",// "program": "${workspaceFolder}${input:GodotBin}",
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "console": "internalConsole",
       "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
-//      "preLaunchTask": "build_bin_and_templates",
     },                
     {
-      "name": "GrupenGames - Editor - C++ debug with mono",
+      "name": "Godot - production - Build and Launch",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
-      "args": [
-        "--editor",
-        "--path",
-        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"
-      ],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "console": "internalConsole",
-      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
-//      "preLaunchTask": "build_bin_and_templates",
-    },
-    {
-      "name": "GrupenGames - Run Project - C++ debug with mono",
-      "type": "cppvsdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
-      "args": [
-//        "--editor",
-        "--path",
-        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"
-      ],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "console": "internalConsole",
-      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
-//      "preLaunchTask": "build_bin_and_templates",
-    },        
-    {
-      "name": "VR annoyed - Editor - C++ debug with mono",
-      "type": "cppvsdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
+      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.exe",// "program": "${workspaceFolder}${input:GodotBin}",
       "args": [
         "--editor",
         "--path",
         "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
+        // "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"        
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "console": "internalConsole",
       "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
-//      "preLaunchTask": "build_bin_and_templates",
-    },
-    {
-      "name": "VR annoyed - Run Project - C++ debug with mono",
-      "type": "cppvsdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.mono.exe",
-      "args": [
-//        "--editor",
-        "--path",
-        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
-      ],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "console": "internalConsole",
-      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
-//      "preLaunchTask": "build_bin_and_templates",
+      "preLaunchTask": "build_bin_and_templates_production",
     },    
   ]
 }
