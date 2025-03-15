@@ -20,5 +20,6 @@
         "shared_mutex": "cpp",
         "stop_token": "cpp",
         "*.inc": "cpp"
-    }
+    },
+    "godotTools.editorPath.godot3": "c:\\Users\\micha\\Projects\\godot\\bin\\godot.windows.editor.x86_64.mono.exe"
 }
