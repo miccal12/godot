@@ -1,7 +1,14 @@
 {
     "C_Cpp.intelliSenseEngineFallback": "enabled",
     "workbench.colorCustomizations": {
-        "sideBar.background": "#252501"
+        "sideBar.background": "#244901",
+        "activityBar.background": "#244901",
+        "titleBar.activeBackground": "#244901",
+        "titleBar.activeForeground": "#7ebbec",
+        "icon.foreground": "#7ebbec",
+        "symbolIcon.colorForeground": "#7ebbec",
+        "icon.colorForeground": "#ff0000",
+        "activityBar.inactiveForeground": "#7ebbec"                
     },
     "dotnet.defaultSolution": "modules/mono/glue/GodotSharp/GodotSharp.sln",
     "files.associations": {
