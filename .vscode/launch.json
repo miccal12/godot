@@ -19,13 +19,11 @@
       "name": "Godot+mono - C++ debug - Build and Launch",
       "type": "cppvsdbg",
       "request": "launch",
-      // "program": "${workspaceFolder}${input:GodotBin}",
-      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",
+      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",      // "program": "${workspaceFolder}${input:GodotBin}",
       "args": [
         "--editor",
         "--path",
         "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
-        // "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"        
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -39,6 +37,11 @@
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",// "program": "${workspaceFolder}${input:GodotBin}",
+      "args": [
+        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
+      ],      
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
@@ -54,7 +57,6 @@
         "--editor",
         "--path",
         "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
-        // "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames"        
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
