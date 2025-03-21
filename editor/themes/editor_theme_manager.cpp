@@ -229,11 +229,8 @@ EditorThemeManager::ThemeConfiguration EditorThemeManager::_create_theme_config(
 	config.preset = EDITOR_GET("interface/theme/preset");
 	config.spacing_preset = EDITOR_GET("interface/theme/spacing_preset");
 
-	String prop= "interface/theme/base_color";
-	config.base_color = EDITOR_GET(prop);
-
-	prop = "interface/theme/accent_color";
-	config.accent_color = EDITOR_GET(prop);
+	config.base_color = EDITOR_GET("interface/theme/base_color");
+	config.accent_color = EDITOR_GET("interface/theme/accent_color");
 		
 	config.contrast = EDITOR_GET("interface/theme/contrast");
 	config.icon_saturation = EDITOR_GET("interface/theme/icon_saturation");
@@ -409,17 +406,13 @@ EditorThemeManager::ThemeConfiguration EditorThemeManager::_create_theme_config(
 	const int separation_base = config.increased_margin + 6;
 	config.forced_even_separation = separation_base + (separation_base % 2);
 
-	prop= "application/interface/theme/base_color";
-	if( ProjectSettings::get_singleton() != nullptr )
+	ProjectSettings *ps = ProjectSettings::get_singleton();
+	if( ps != nullptr )
 	{
-		Variant variant = ProjectSettings::get_singleton()->get(prop);
+		Variant variant = ps->get("application/interface/theme/base_color");
 		if (variant.get_type() == Variant::COLOR) config.base_color = variant;
-	}
 
-	prop = "application/interface/theme/accent_color";
-	if( ProjectSettings::get_singleton() != nullptr )
-	{
-		Variant variant = ProjectSettings::get_singleton()->get(prop);
+		variant = ps->get("application/interface/theme/accent_color");
 		if (variant.get_type() == Variant::COLOR) config.accent_color = variant;
 	}
 	return config;
