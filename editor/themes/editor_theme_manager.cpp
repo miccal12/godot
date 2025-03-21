@@ -231,7 +231,6 @@ EditorThemeManager::ThemeConfiguration EditorThemeManager::_create_theme_config(
 
 	config.base_color = EDITOR_GET("interface/theme/base_color");
 	config.accent_color = EDITOR_GET("interface/theme/accent_color");
-		
 	config.contrast = EDITOR_GET("interface/theme/contrast");
 	config.icon_saturation = EDITOR_GET("interface/theme/icon_saturation");
 
