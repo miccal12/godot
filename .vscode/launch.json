@@ -16,14 +16,14 @@
       "processId": "${command:pickProcess}",
     },    
     {
-      "name": "Godot+mono - C++ debug - Build and Launch - VR annoyed",
+      "name": "Godot+mono - C++ debug - Build and Launch",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",      // "program": "${workspaceFolder}${input:GodotBin}",
       "args": [
-        "--editor",
+/*        "--editor",
         "--path",
-        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"*/
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -33,14 +33,14 @@
       "preLaunchTask": "build_debug_with_mono",
     },
     {
-      "name": "Godot+mono - C++ debug - Launch - VR annoyed",
+      "name": "Godot+mono - C++ debug - Launch",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",// "program": "${workspaceFolder}${input:GodotBin}",
       "args": [
-        "--editor",
+/*        "--editor",
         "--path",
-        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"*/
       ],      
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
