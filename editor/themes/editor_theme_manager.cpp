@@ -45,6 +45,7 @@
 #include "scene/resources/style_box_line.h"
 #include "scene/resources/style_box_texture.h"
 #include "scene/resources/texture.h"
+#include "core/config/project_settings.h"
 
 // Theme configuration.
 
@@ -228,8 +229,22 @@ EditorThemeManager::ThemeConfiguration EditorThemeManager::_create_theme_config(
 	config.preset = EDITOR_GET("interface/theme/preset");
 	config.spacing_preset = EDITOR_GET("interface/theme/spacing_preset");
 
-	config.base_color = EDITOR_GET("interface/theme/base_color");
-	config.accent_color = EDITOR_GET("interface/theme/accent_color");
+	String prop= "application/interface/theme/base_color";
+	Variant variant = ProjectSettings::get_singleton()->get(prop);
+	if (String(variant) != "") {
+		config.base_color = variant;
+	} else {
+		config.base_color = EDITOR_GET(prop);
+	}	
+
+	prop = "application/interface/theme/accent_color";
+	variant = ProjectSettings::get_singleton()->get(prop);	
+	if (String(variant) != "") {
+		config.accent_color = variant;
+	} else {
+		config.accent_color = EDITOR_GET(prop);
+	}		
+		
 	config.contrast = EDITOR_GET("interface/theme/contrast");
 	config.icon_saturation = EDITOR_GET("interface/theme/icon_saturation");
 
