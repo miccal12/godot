@@ -30,6 +30,7 @@
 
 #include "gdscript_language_server.h"
 
+#include "core/config/project_settings.h"
 #include "core/os/os.h"
 #include "editor/editor_log.h"
 #include "editor/editor_node.h"
@@ -41,6 +42,13 @@ GDScriptLanguageServer::GDScriptLanguageServer() {
 	// TODO: Move to editor_settings.cpp
 	_EDITOR_DEF("network/language_server/remote_host", host);
 	_EDITOR_DEF("network/language_server/remote_port", port);
+	ProjectSettings *ps = ProjectSettings::get_singleton();
+	if (ps != nullptr) {
+		Variant variant = ps->get("application/network/language_server/remote_port");
+		if (variant.get_type() == Variant::INT) {
+			port = variant;
+		}
+	}
 	_EDITOR_DEF("network/language_server/enable_smart_resolve", true);
 	_EDITOR_DEF("network/language_server/show_native_symbols_in_editor", false);
 	_EDITOR_DEF("network/language_server/use_thread", use_thread);
@@ -69,7 +77,19 @@ void GDScriptLanguageServer::_notification(int p_what) {
 			}
 
 			String remote_host = String(_EDITOR_GET("network/language_server/remote_host"));
-			int remote_port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
+			int remote_port;
+			if (GDScriptLanguageServer::port_override > -1) {
+				remote_port = GDScriptLanguageServer::port_override;
+			} else {
+				remote_port = (int)_EDITOR_GET("network/language_server/remote_port");
+				ProjectSettings *ps = ProjectSettings::get_singleton();
+				if (ps != nullptr) {
+					Variant variant = ps->get("application/network/language_server/remote_port");
+					if (variant.get_type() == Variant::INT) {
+						remote_port = variant;
+					}
+				}
+			}
 			bool remote_use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
 			int remote_poll_limit = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
 			if (remote_host != host || remote_port != port || remote_use_thread != use_thread || remote_poll_limit != poll_limit_usec) {
@@ -92,7 +112,18 @@ void GDScriptLanguageServer::thread_main(void *p_userdata) {
 
 void GDScriptLanguageServer::start() {
 	host = String(_EDITOR_GET("network/language_server/remote_host"));
-	port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
+	if (GDScriptLanguageServer::port_override > -1) {
+		port = GDScriptLanguageServer::port_override;
+	} else {
+		port = (int)_EDITOR_GET("network/language_server/remote_port");
+		ProjectSettings *ps = ProjectSettings::get_singleton();
+		if (ps != nullptr) {
+			Variant variant = ps->get("application/network/language_server/remote_port");
+			if (variant.get_type() == Variant::INT) {
+				port = variant;
+			}
+		}
+	}
 	use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
 	poll_limit_usec = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
 	if (protocol.start(port, IPAddress(host)) == OK) {
