@@ -30,297 +30,26 @@
 
 #import "os_ios.h"
 
+#import "display_server_ios.h"
+
 #ifdef IOS_ENABLED
 
-#import "app_delegate.h"
-#import "display_server_ios.h"
-#import "godot_view.h"
-#import "ios_terminal_logger.h"
-#import "view_controller.h"
-
-#include "core/config/project_settings.h"
-#include "core/io/dir_access.h"
-#include "core/io/file_access.h"
-#include "core/io/file_access_pack.h"
-#include "drivers/unix/syslog_logger.h"
-#include "main/main.h"
-
-#import <AudioToolbox/AudioServices.h>
-#import <CoreText/CoreText.h>
-#import <UIKit/UIKit.h>
-#import <dlfcn.h>
-#include <sys/sysctl.h>
-
-#if defined(RD_ENABLED)
-#include "servers/rendering/renderer_rd/renderer_compositor_rd.h"
-#import <QuartzCore/CAMetalLayer.h>
-
-#if defined(VULKAN_ENABLED)
-#include "drivers/vulkan/godot_vulkan.h"
-#endif // VULKAN_ENABLED
-#endif
-
-// Initialization order between compilation units is not guaranteed,
-// so we use this as a hack to ensure certain code is called before
-// everything else, but after all units are initialized.
-typedef void (*init_callback)();
-static init_callback *ios_init_callbacks = nullptr;
-static int ios_init_callbacks_count = 0;
-static int ios_init_callbacks_capacity = 0;
-HashMap<String, void *> OS_IOS::dynamic_symbol_lookup_table;
-
-void add_ios_init_callback(init_callback cb) {
-	if (ios_init_callbacks_count == ios_init_callbacks_capacity) {
-		void *new_ptr = realloc(ios_init_callbacks, sizeof(cb) * (ios_init_callbacks_capacity + 32));
-		if (new_ptr) {
-			ios_init_callbacks = (init_callback *)(new_ptr);
-			ios_init_callbacks_capacity += 32;
-		} else {
-			ERR_FAIL_MSG("Unable to allocate memory for extension callbacks.");
-		}
-	}
-	ios_init_callbacks[ios_init_callbacks_count++] = cb;
-}
-
-void register_dynamic_symbol(char *name, void *address) {
-	OS_IOS::dynamic_symbol_lookup_table[String(name)] = address;
-}
-
-Rect2 fit_keep_aspect_centered(const Vector2 &p_container, const Vector2 &p_rect) {
-	real_t available_ratio = p_container.width / p_container.height;
-	real_t fit_ratio = p_rect.width / p_rect.height;
-	Rect2 result;
-	if (fit_ratio < available_ratio) {
-		// Fit height - we'll have horizontal gaps
-		result.size.height = p_container.height;
-		result.size.width = p_container.height * fit_ratio;
-		result.position.y = 0;
-		result.position.x = (p_container.width - result.size.width) * 0.5f;
-	} else {
-		// Fit width - we'll have vertical gaps
-		result.size.width = p_container.width;
-		result.size.height = p_container.width / fit_ratio;
-		result.position.x = 0;
-		result.position.y = (p_container.height - result.size.height) * 0.5f;
-	}
-	return result;
-}
-
-Rect2 fit_keep_aspect_covered(const Vector2 &p_container, const Vector2 &p_rect) {
-	real_t available_ratio = p_container.width / p_container.height;
-	real_t fit_ratio = p_rect.width / p_rect.height;
-	Rect2 result;
-	if (fit_ratio < available_ratio) {
-		// Need to scale up to fit width, and crop height
-		result.size.width = p_container.width;
-		result.size.height = p_container.width / fit_ratio;
-		result.position.x = 0;
-		result.position.y = (p_container.height - result.size.height) * 0.5f;
-	} else {
-		// Need to scale up to fit height, and crop width
-		result.size.width = p_container.height * fit_ratio;
-		result.size.height = p_container.height;
-		result.position.x = (p_container.width - result.size.width) * 0.5f;
-		result.position.y = 0;
-	}
-	return result;
-}
-
 OS_IOS *OS_IOS::get_singleton() {
-	return (OS_IOS *)OS::get_singleton();
+	return (OS_IOS *)OS_AppleEmbedded::get_singleton();
 }
 
-OS_IOS::OS_IOS() {
-	for (int i = 0; i < ios_init_callbacks_count; ++i) {
-		ios_init_callbacks[i]();
-	}
-	free(ios_init_callbacks);
-	ios_init_callbacks = nullptr;
-	ios_init_callbacks_count = 0;
-	ios_init_callbacks_capacity = 0;
-
-	main_loop = nullptr;
-
-	Vector<Logger *> loggers;
-	loggers.push_back(memnew(IOSTerminalLogger));
-	_set_logger(memnew(CompositeLogger(loggers)));
-
-	AudioDriverManager::add_driver(&audio_driver);
-
+OS_IOS::OS_IOS() :
+		OS_AppleEmbedded() {
 	DisplayServerIOS::register_ios_driver();
 }
 
 OS_IOS::~OS_IOS() {}
 
-void OS_IOS::alert(const String &p_alert, const String &p_title) {
-	const CharString utf8_alert = p_alert.utf8();
-	const CharString utf8_title = p_title.utf8();
-	iOS::alert(utf8_alert.get_data(), utf8_title.get_data());
-}
-
-void OS_IOS::initialize_core() {
-	OS_Unix::initialize_core();
-}
-
-void OS_IOS::initialize() {
-	initialize_core();
-}
-
-void OS_IOS::initialize_joypads() {
-	joypad_apple = memnew(JoypadApple);
-}
-
-void OS_IOS::initialize_modules() {
-	ios = memnew(iOS);
-	Engine::get_singleton()->add_singleton(Engine::Singleton("iOS", ios));
-}
-
-void OS_IOS::deinitialize_modules() {
-	if (joypad_apple) {
-		memdelete(joypad_apple);
-	}
-
-	if (ios) {
-		memdelete(ios);
-	}
-}
-
-void OS_IOS::set_main_loop(MainLoop *p_main_loop) {
-	main_loop = p_main_loop;
-}
-
-MainLoop *OS_IOS::get_main_loop() const {
-	return main_loop;
-}
-
-void OS_IOS::delete_main_loop() {
-	if (main_loop) {
-		main_loop->finalize();
-		memdelete(main_loop);
-	}
-
-	main_loop = nullptr;
-}
-
-bool OS_IOS::iterate() {
-	if (!main_loop) {
-		return true;
-	}
-
-	if (DisplayServer::get_singleton()) {
-		DisplayServer::get_singleton()->process_events();
-	}
-
-	joypad_apple->process_joypads();
-
-	return Main::iteration();
-}
-
-void OS_IOS::start() {
-	if (Main::start() == EXIT_SUCCESS) {
-		main_loop->initialize();
-	}
-}
-
-void OS_IOS::finalize() {
-	deinitialize_modules();
-
-	// Already gets called
-	//delete_main_loop();
-}
-
-// MARK: Dynamic Libraries
-
-_FORCE_INLINE_ String OS_IOS::get_framework_executable(const String &p_path) {
-	Ref<DirAccess> da = DirAccess::create(DirAccess::ACCESS_FILESYSTEM);
-
-	// Read framework bundle to get executable name.
-	NSURL *url = [NSURL fileURLWithPath:@(p_path.utf8().get_data())];
-	NSBundle *bundle = [NSBundle bundleWithURL:url];
-	if (bundle) {
-		String exe_path = String::utf8([[bundle executablePath] UTF8String]);
-		if (da->file_exists(exe_path)) {
-			return exe_path;
-		}
-	}
-
-	// Try default executable name (invalid framework).
-	if (da->dir_exists(p_path) && da->file_exists(p_path.path_join(p_path.get_file().get_basename()))) {
-		return p_path.path_join(p_path.get_file().get_basename());
-	}
-
-	// Not a framework, try loading as .dylib.
-	return p_path;
-}
-
-Error OS_IOS::open_dynamic_library(const String &p_path, void *&p_library_handle, GDExtensionData *p_data) {
-	if (p_path.length() == 0) {
-		// Static xcframework.
-		p_library_handle = RTLD_SELF;
-
-		if (p_data != nullptr && p_data->r_resolved_path != nullptr) {
-			*p_data->r_resolved_path = p_path;
-		}
-
-		return OK;
-	}
-
-	String path = get_framework_executable(p_path);
-
-	if (!FileAccess::exists(path)) {
-		// Load .dylib or framework from within the executable path.
-		path = get_framework_executable(get_executable_path().get_base_dir().path_join(p_path.get_file()));
-	}
-
-	if (!FileAccess::exists(path)) {
-		// Load .dylib converted to framework from within the executable path.
-		path = get_framework_executable(get_executable_path().get_base_dir().path_join(p_path.get_file().get_basename() + ".framework"));
-	}
-
-	if (!FileAccess::exists(path)) {
-		// Load .dylib or framework from a standard iOS location.
-		path = get_framework_executable(get_executable_path().get_base_dir().path_join("Frameworks").path_join(p_path.get_file()));
-	}
-
-	if (!FileAccess::exists(path)) {
-		// Load .dylib converted to framework from a standard iOS location.
-		path = get_framework_executable(get_executable_path().get_base_dir().path_join("Frameworks").path_join(p_path.get_file().get_basename() + ".framework"));
-	}
-
-	ERR_FAIL_COND_V(!FileAccess::exists(path), ERR_FILE_NOT_FOUND);
-
-	p_library_handle = dlopen(path.utf8().get_data(), RTLD_NOW);
-	ERR_FAIL_NULL_V_MSG(p_library_handle, ERR_CANT_OPEN, vformat("Can't open dynamic library: %s. Error: %s.", p_path, dlerror()));
-
-	if (p_data != nullptr && p_data->r_resolved_path != nullptr) {
-		*p_data->r_resolved_path = path;
-	}
-
-	return OK;
-}
-
-Error OS_IOS::close_dynamic_library(void *p_library_handle) {
-	if (p_library_handle == RTLD_SELF) {
-		return OK;
-	}
-	return OS_Unix::close_dynamic_library(p_library_handle);
-}
-
-Error OS_IOS::get_dynamic_library_symbol_handle(void *p_library_handle, const String &p_name, void *&p_symbol_handle, bool p_optional) {
-	if (p_library_handle == RTLD_SELF) {
-		void **ptr = OS_IOS::dynamic_symbol_lookup_table.getptr(p_name);
-		if (ptr) {
-			p_symbol_handle = *ptr;
-			return OK;
-		}
-	}
-	return OS_Unix::get_dynamic_library_symbol_handle(p_library_handle, p_name, p_symbol_handle, p_optional);
-}
-
 String OS_IOS::get_name() const {
 	return "iOS";
 }
 
+<<<<<<< HEAD
 String OS_IOS::get_distribution_name() const {
 	return get_name();
 }
@@ -720,4 +449,6 @@ Rect2 OS_IOS::calculate_boot_screen_rect(const Size2 &p_window_size, const Size2
 	}
 }
 
+=======
+>>>>>>> upstream/4.5
 #endif // IOS_ENABLED
