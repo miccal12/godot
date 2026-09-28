@@ -1,0 +1,262 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    // "inputs": [
+        // {
+            // "id": "GodotBin",
+            // "type": "promptString",
+            // "default": "\\bin\\godot.windows.editor.x86_64.mono.exe",
+            // "description": "godot bin"
+        // }
+    // ],       
+    "tasks": [
+        
+        ///////////////////////////////
+        // GODOT with mono
+        ///////////////////////////////        
+        {
+            "label": "build_production_and_templates_with_mono",
+            "dependsOn": [
+                "build_bin_production_with_mono",
+                "build_templates_production_with_mono",
+                "printEnvVariablesToFile",
+                "generate_glue",
+                "build_managed_libraries",
+                "push_nupkgs_local",
+
+            ],
+            "dependsOrder": "sequence",
+        },
+        {
+            "label": "build_debug_with_mono",
+            "dependsOn": [
+                "build_bin_debug_with_mono",
+                //"build_templates_debug_with_mono",                
+                "printEnvVariablesToFile",
+                "generate_glue",
+                "build_managed_libraries",
+                "push_nupkgs_local",
+
+            ],
+            "dependsOrder": "sequence",
+        },
+        {
+            "label": "build_bin_production_with_mono",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "platform=windows",
+                "lto=full",
+                "target=editor",
+                "arch=x86_64",    
+                "bits=64",    
+                "module_mono_enabled=yes",
+                "llvm=yes",
+//                "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", NOT neccesary if std path
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_bin_debug_with_mono",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "debug_symbols=yes",
+                "optimize=debug",
+                "target=editor",
+                "warnings=extra",
+                "werror=yes",
+                "tests=yes",
+                "strict_checks=yes",
+                "llvm=yes",
+                "module_mono_enabled=yes",    
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_templates_production_with_mono",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "platform=windows",
+                "lto=full",
+                "target=template_release",
+                "arch=x86_64",
+                "bits=64",
+                "module_mono_enabled=yes",
+                "llvm=yes",
+//                "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", , NOT neccesary if std path               
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_templates_debug_with_mono",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "debug_symbols=yes",
+                "optimize=debug",
+                "warnings=extra",
+                "werror=yes",
+                "tests=yes",
+                "strict_checks=yes",
+                "module_mono_enabled=yes",    
+                "lto=full",
+                "target=template_debug",
+                "llvm=yes",
+  //              "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer",  , NOT neccesary if std path              
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        ///////////////////////////////
+        // GODOT only GDscript
+        ///////////////////////////////        
+        {
+            "label": "build_bin_and_templates_production",
+            "dependsOn": [
+                "build_bin_production",
+                "build_templates_production",
+            ],
+            "dependsOrder": "sequence",
+        },
+        {
+            "label": "build_bin_debug",
+            "dependsOn": [
+                "build_bin_debug",
+//                "build_templates_debug",                
+            ],
+            "dependsOrder": "sequence",
+        },                        
+        {
+            "label": "build_bin_production",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "target=editor",
+                "llvm=yes",
+                // "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", NOT neccesary if std path
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_bin_debug",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "debug_symbols=yes",
+                "optimize=debug",
+                "target=editor",
+                "warnings=extra",
+                "werror=yes",
+                "tests=yes",
+                "strict_checks=yes",
+                "llvm=yes",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_templates_production",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "target=template_release",
+                "arch=x86_64",
+                "llvm=yes",
+                // "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer", , NOT neccesary if std path               
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build_templates_debug",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                "debug_symbols=yes",
+                "optimize=debug",
+                "warnings=extra",
+                "werror=yes",
+                "tests=yes",
+                "strict_checks=yes",
+                "module_mono_enabled=yes",    
+                "lto=full",
+                "target=template_debug",
+                "llvm=yes",
+                // "custom_modules=${workspaceFolder}\\modules\\godotsteam, ${workspaceFolder}\\modules\\godotsteam_multiplayer_peer",  , NOT neccesary if std path              
+            ],
+            "problemMatcher": "$msCompile"
+        },
+            ///////////////////////////////
+            // COMMON
+            ///////////////////////////////  
+        {
+            "label": "clean",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+                    "-c",
+            ],
+            "problemMatcher": "$msCompile"
+        },      
+        {
+            "label": "generate_glue",
+            "group": "build",
+            "type": "shell",
+            "command": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",
+            "args": [
+                "--headless",
+                "--generate-mono-glue",
+                "modules/mono/glue",
+                // "--quit",
+            ],
+            "problemMatcher": "$msCompile",
+            "isBackground": false,
+            
+        },
+        {
+            "label": "build_managed_libraries",
+            "group": "build",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}\\modules\\mono\\build_scripts\\build_assemblies.py",
+                "--godot-output-dir=${workspaceFolder}\\bin",
+                "--godot-platform=windows",
+            ],
+            "problemMatcher": "$msCompile"
+        },    
+        {
+            "label": "push_nupkgs_local",
+            "group": "build",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}\\modules\\mono\\build_scripts\\build_assemblies.py",
+                "--godot-output-dir=${workspaceFolder}\\bin",
+                "--push-nupkgs-local",
+                "C:\\Users\\micha\\MyLocalNugetSource",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "printEnvVariablesToFile",
+            "group": "build",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2026.4.0-win32-x64\\python_files\\printEnvVariablesToFile.py",
+                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2026.4.0-win32-x64\\python_files\\deactivate\\powershell\\envVars.txt",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+    ]
+}

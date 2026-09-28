@@ -1,0 +1,69 @@
+{
+  "version": "0.2.0",  
+  // "inputs": [
+    // {
+        // "id": "GodotBin",
+        // "type": "promptString",
+        // "default": "\\bin\\godot.windows.editor.x86_64.mono.exe",
+        // "description": "godot bin"
+    // }
+  // ],   
+  "configurations": [
+    {
+      "name": "(Windows) Attach",
+      "type": "cppvsdbg",
+      "request": "attach",
+      "processId": "${command:pickProcess}",
+    },    
+    {
+      "name": "Godot+mono - C++ debug - Build and Launch",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",      // "program": "${workspaceFolder}${input:GodotBin}",
+      "args": [
+/*        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"*/
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole",
+      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+      "preLaunchTask": "build_debug_with_mono",
+    },
+    {
+      "name": "Godot+mono - C++ debug - Launch",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.mono.exe",// "program": "${workspaceFolder}${input:GodotBin}",
+      "args": [
+/*        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"*/
+      ],      
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole",
+      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+    },                
+    {
+      "name": "Godot - production - Build and Launch",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}\\bin\\godot.windows.editor.x86_64.exe",// "program": "${workspaceFolder}${input:GodotBin}",
+      "args": [
+        "--editor",
+        "--path",
+        "C:/Users/micha/Projects/GrupenGamesCpp/GrupenGames/VRannoyed"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole",
+      "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+      "preLaunchTask": "build_bin_and_templates_production",
+    },    
+  ]
+}
