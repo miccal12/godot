@@ -73,6 +73,8 @@
                 "strict_checks=yes",
                 "llvm=yes",
                 "module_mono_enabled=yes",    
+                "d3d12=yes",
+                "angle=yes",                
             ],
             "problemMatcher": "$msCompile"
         },
@@ -228,8 +230,8 @@
             "type": "shell",
             "command": "python",
             "args": [
-                "${workspaceFolder}\\modules\\mono\\build_scripts\\build_assemblies.py",
-                "--godot-output-dir=${workspaceFolder}\\bin",
+                "${workspaceFolder}/modules/mono/build_scripts/build_assemblies.py",
+                "--godot-output-dir=${workspaceFolder}/bin",
                 "--godot-platform=windows",
             ],
             "problemMatcher": "$msCompile"
@@ -253,10 +255,36 @@
             "type": "shell",
             "command": "python",
             "args": [
-                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2026.4.0-win32-x64\\python_files\\printEnvVariablesToFile.py",
-                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2026.4.0-win32-x64\\python_files\\deactivate\\powershell\\envVars.txt",
+                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2026.6.0-win32-x64\\python_files\\printEnvVariablesToFile.py",
+                "c:\\Users\\micha\\.vscode\\extensions\\ms-python.python-2026.6.0-win32-x64\\python_files\\deactivate\\powershell\\envVars.txt",
             ],
             "problemMatcher": "$msCompile"
         },
+        {
+            "label": "build",
+            "group": "build",
+            "type": "shell",
+            "command": "scons",
+            "args": [
+            // enable for debugging with breakpoints
+            "dev_build=yes",
+            "d3d12=yes",
+            "module_mono_enabled=yes",
+            "p=windows",
+            "target=editor",
+            "tools=yes",
+//            "mono_glue=yes",
+            "angle=yes",
+            "debug_symbols=yes",
+            "optimize=debug",
+            "warnings=extra",
+            "werror=yes",
+            "tests=yes",
+            "strict_checks=yes",
+            "lto=full",
+            "llvm=yes",            
+            ],
+            "problemMatcher": "$msCompile"
+        }        
     ]
 }
